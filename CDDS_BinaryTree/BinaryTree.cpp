@@ -104,7 +104,7 @@ void BinaryTree::remove(int value)
 		if (nodeToCopyParent->hasLeft())
 		{
 			//Check if the left child stores the same data as the node we wanted to remove.
-			if (nodeToCopyParent->getLeft()->getData() == nodeToRemove->getData());
+			if (nodeToCopyParent->getLeft()->getData() == nodeToRemove->getData())
 			{
 				//Set the second iterators left child to be the first iterators right child.
 				nodeToCopyParent->setLeft(nodeToCopy->getRight());
