@@ -1,2 +1,3 @@
 ﻿  BinaryTree.cpp
+C:\Users\pc\Documents\GitHub\Projects\BinaryTreeTemplate\CDDS_BinaryTree\BinaryTree.cpp(106,74): warning C4390: ';': empty controlled statement found; is this the intent?
   CDDS_BinaryTree.vcxproj -> C:\Users\pc\Documents\GitHub\Projects\BinaryTreeTemplate\bin\x64\Debug\CDDS_BinaryTree.exe
