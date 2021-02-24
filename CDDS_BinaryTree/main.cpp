@@ -86,8 +86,19 @@ int main(int argc, char* argv[])
 
         if (GuiButton(Rectangle{ 25, 95, 125, 30 }, GuiIconText(RICON_CROSS, "Destroy")))
         {
-            // Implement the code to remove the node with value = valueBoxValue from your binary tree here! 
+            // Implement the code to remove all nodes in the list 
             binaryTree.~BinaryTree();
+        }
+
+        if (GuiButton(Rectangle{ 25, 130, 125, 30 }, GuiIconText(RICON_CROSS, "Jitter")))
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < valueBoxValue; j++)
+                    binaryTree.insert(j);
+
+                binaryTree.~BinaryTree();
+            }
         }
 
         // draw the binary tree
