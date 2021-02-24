@@ -11,7 +11,7 @@ BinaryTree::~BinaryTree()
 void BinaryTree::insert(int value)
 {
 	//If the tree is empty, set the root to be a new node with the given value.
-	if (m_root == nullptr)
+	if (!m_root)
 	{
 		m_root = new TreeNode(value);
 		return;

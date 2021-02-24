@@ -70,10 +70,23 @@ int main(int argc, char* argv[])
             selectedNode = binaryTree.find(valueBoxValue);
         }
 
+        if (GuiButton(Rectangle{ 25, 60, 125, 30 }, GuiIconText(RICON_CROSS, "MassInsert")))
+        {
+            // Implement the code to insert up to the value box
+            for (int i = 0; i < valueBoxValue; i++)
+                binaryTree.insert(i);
+            selectedNode = binaryTree.find(valueBoxValue);
+        }
+
         if (GuiButton(Rectangle{ 160, 60, 125, 30 }, GuiIconText(RICON_CROSS, "Remove")))
         {
             // Implement the code to remove the node with value = valueBoxValue from your binary tree here! 
-            /*binaryTree.remove(valueBoxValue);*/
+            binaryTree.remove(valueBoxValue);
+        }
+
+        if (GuiButton(Rectangle{ 25, 95, 125, 30 }, GuiIconText(RICON_CROSS, "Destroy")))
+        {
+            // Implement the code to remove the node with value = valueBoxValue from your binary tree here! 
             binaryTree.~BinaryTree();
         }
 
