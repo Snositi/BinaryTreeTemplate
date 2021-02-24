@@ -59,72 +59,61 @@ void BinaryTree::insert(int value)
 
 void BinaryTree::remove(int value)
 {
-	if (!find(value))
-		return;
 	//Create two TreeNode pointers: one to hold a reference to the node we want to remove
-	TreeNode* nodeToRemove = find(value);
+	TreeNode* nodeToRemove = m_root;
 	//and another to hold a reference to its parent.
 	TreeNode* nodeToRemoveParent = m_root;
 	//Try to find the node that matches the value given and its parent in the tree.
-	while (nodeToRemoveParent->getData() != nodeToRemove->getData())
+	if (!findNode(value, nodeToRemove, nodeToRemoveParent))
 	{
-		if (nodeToRemoveParent->hasLeft())
-			if (nodeToRemoveParent->getLeft() == nodeToRemove)
-				break;
-		if (nodeToRemoveParent->hasRight())
-			if (nodeToRemoveParent->getRight() == nodeToRemove)
-				break;
-
-		if (nodeToRemoveParent->getData() > value)
-			nodeToRemoveParent = nodeToRemoveParent->getLeft();
-		else if (nodeToRemoveParent->getData() < value)
-			nodeToRemoveParent = nodeToRemoveParent->getRight();
-		else		//If the node cannot be found return.		
-			return;
+		//If the node cannot be found return.
+		return;
 	}
 	//Check to see if the node has a right
 	if (nodeToRemove->hasRight())
 	{
 		//Initialize two iterators to find the node whose data will be copied and its parent.
+		TreeNode* firstIterator = m_root;
+		TreeNode* secondIterator = m_root;
 		//Set the first iterator to point to the right child of the node we want to remove.
-		TreeNode* nodeToCopy = nodeToRemove->getRight();
-		TreeNode* nodeToCopyParent = nodeToRemove;
+		findNode(nodeToRemove->getRight()->getData(), firstIterator, secondIterator);
 		//Loop while the first iterator has a value to its left
-		while (nodeToCopy->hasLeft())
+		while (firstIterator->hasLeft())
 		{
 			//Set the second iterator to be the value of the first iterator.
-			nodeToCopyParent = nodeToCopy;
+			secondIterator = firstIterator;
 			//Set the first iterator to be the value to the left of it
-			nodeToCopy = nodeToCopy->getLeft();
+			firstIterator = firstIterator->getLeft();
 			//end loop
 		}
 		//Once the smallest value has been found, copy the data in first iterator to the node we want to remove.
-		nodeToRemove->setData(nodeToCopy->getData());
+		nodeToRemove->setData(firstIterator->getData());
 		//Check if the second iterator has a left child.
-		if (nodeToCopyParent->hasLeft())
+		if (secondIterator->hasLeft())
 		{
 			//Check if the left child stores the same data as the node we wanted to remove.
-			if (nodeToCopyParent->getLeft()->getData() == nodeToRemove->getData())
+			if (secondIterator->getLeft()->getData() == nodeToRemove->getData())
 			{
 				//Set the second iterators left child to be the first iterators right child.
-				nodeToCopyParent->setLeft(nodeToCopy->getRight());
+				secondIterator->setLeft(firstIterator->getRight());
 			}
 		}
 		//Check if the second iterator has a right child.
-		if (nodeToCopyParent->hasRight())
+		if (secondIterator->hasRight())
 		{
 			//Check if the right child contains the same data as the node we want to remove.
-			if (nodeToCopyParent->getRight()->getData() == nodeToRemove->getData())
+			if (secondIterator->getRight()->getData() == nodeToRemove->getData())
 			{
 				//Set the right child of the second iterator to be the right child of the first iterator.
-				nodeToCopyParent->setRight(nodeToCopy->getRight());
+				secondIterator->setRight(firstIterator->getRight());
 			}
 		}
 		//Delete the first iterator
-		delete nodeToCopy;
-	}//Otherwise, if the node doesn't have a right child
-	else if (nodeToRemove->hasRight() == false)
-	{ //check if the parent of the node to remove has a left child.
+		delete firstIterator;
+	} //Otherwise, if the node doesn't have a right child
+	else
+	{
+		//check if the parent of the node to remove has a left child.
 		if (nodeToRemoveParent->hasLeft())
 		{
 			//Check if the data that the left child holds is the same as the data the node to remove holds.
@@ -144,20 +133,18 @@ void BinaryTree::remove(int value)
 				nodeToRemoveParent->setRight(nodeToRemove->getLeft());
 			}
 		}
-	}
+		//Check if the node we want to remove is the root.
+		if (nodeToRemove == m_root)
+		{
+			//Set the root to be its left child.
+			m_root = m_root->getLeft();
 
-	//Check if the node we want to remove is the root.
-	if (nodeToRemove == m_root)
-	{
-		//Set the root to be its left child.
-		m_root = m_root->getLeft();
-		//Delete the pointer that points to the node to remove.
-		delete nodeToRemove;
+			//Delete the pointer that points to the node to remove.
+			delete nodeToRemove;
+		}
 	}
-
+	
 }
-
-
 
 TreeNode* BinaryTree::find(int value)
 {
@@ -197,6 +184,41 @@ void BinaryTree::draw(TreeNode* selected)
 
 bool BinaryTree::findNode(int searchValue, TreeNode*& nodeFound, TreeNode*& nodeParent)
 {
+	//Create two iterators: one that will point to the current node to compare the search value to,
+	TreeNode* currentNode = nodeFound;
+	//and the other to hold a reference to the parent.
+	TreeNode* parentReference = nodeParent;
+
+	//Loop while the current node iterator isn't nullptr/
+	while (currentNode)
+	{
+		//Check if the search value is the same as the current nodes data.
+		if (searchValue == currentNode->getData())
+		{
+			//Set the node found argument to be the current node and the parent node to be the parent node iterator.
+			nodeFound = currentNode;
+			nodeParent = parentReference;
+			//Return true.
+			return true;
+		}
+		//Check if the search value is greater than the value at the current node.
+		if (searchValue > currentNode->getData())
+		{
+			//Set the parent node to be the current node.
+			parentReference = currentNode;
+			//Set the current node to be the child to the right of the current node.
+			currentNode = currentNode->getRight();
+		} //Check if the search value is less than the value at the current node.
+		else if (searchValue < currentNode->getData())
+		{
+				//Set the parent node to be the current node.
+			parentReference = currentNode;
+				//Set the current node to be its left child.
+			currentNode = currentNode->getLeft();
+		}
+	//end loop
+	}
+	//Return false.
 	return false;
 }
 
