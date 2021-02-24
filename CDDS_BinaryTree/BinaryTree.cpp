@@ -4,6 +4,8 @@
 
 BinaryTree::~BinaryTree()
 {
+	while (m_root)
+		remove(m_root->getData());
 }
 
 void BinaryTree::insert(int value)
@@ -142,8 +144,7 @@ void BinaryTree::remove(int value)
 			//Delete the pointer that points to the node to remove.
 			delete nodeToRemove;
 		}
-	}
-	
+	}	
 }
 
 TreeNode* BinaryTree::find(int value)
